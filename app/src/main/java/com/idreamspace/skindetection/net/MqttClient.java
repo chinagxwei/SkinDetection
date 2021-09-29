@@ -5,6 +5,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.idreamspace.skindetection.app.Component;
+import com.idreamspace.skindetection.config.Event;
 import com.idreamspace.skindetection.config.UriConfig;
 import com.idreamspace.skindetection.utils.Util;
 
@@ -81,14 +82,14 @@ public class MqttClient implements Component {
                 JSONObject jsonObject = new JSONObject(data);
                 if (jsonObject.has("event") && jsonObject.has("data")) {
                     switch (jsonObject.getString("event")) {
-//                        case Event.SET_QRCODE:
-//                            Log.d(TAG, "设置二维码");
-//                            Log.d(TAG, jsonObject.getString("data"));
-//                            break;
-//                        case Event.LOGIN:
-//                            Log.d(TAG, "用户扫码登录");
-//                            Log.d(TAG, jsonObject.getString("data"));
-//                            break;
+                        case Event.SET_QRCODE:
+                            Log.d(TAG, "设置二维码");
+                            Log.d(TAG, jsonObject.getString("data"));
+                            break;
+                        case Event.LOGIN:
+                            Log.d(TAG, "用户扫码登录");
+                            Log.d(TAG, jsonObject.getString("data"));
+                            break;
                     }
                 }
 
