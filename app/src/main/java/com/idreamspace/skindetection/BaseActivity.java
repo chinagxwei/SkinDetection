@@ -28,6 +28,7 @@ import com.idreamspace.skindetection.utils.Util;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.JSONObject;
 
@@ -47,6 +48,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         this.registerReceiver();
+        this.connectMqttServer();
         this.handlerMqttMessage();
         model = new ViewModelProvider(this).get(AppVIewModel.class);
     }
@@ -114,6 +116,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         mIntentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         this.appReceiver = new AppReceiver();
         this.registerReceiver(this.appReceiver, mIntentFilter);
+    }
+
+    protected void connectMqttServer(){
+        AppEntity app = (AppEntity) getApplication();
+        MqttClient mqttClient = app.getComponent(MqttClient.class);
+        try {
+            mqttClient.connect();
+        } catch (MqttException e) {
+            Log.d(TAG, e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     protected void handlerMqttMessage() {

@@ -9,6 +9,9 @@ public class AppVIewModel extends ViewModel {
     private MutableLiveData<String> openid;
 
     public MutableLiveData<String> getQrcode() {
+        if (qrcode == null) {
+            qrcode = new MutableLiveData<>();
+        }
         return qrcode;
     }
 
@@ -17,6 +20,9 @@ public class AppVIewModel extends ViewModel {
     }
 
     public MutableLiveData<String> getOpenid() {
+        if (openid == null) {
+            openid = new MutableLiveData<>();
+        }
         return openid;
     }
 

@@ -19,7 +19,7 @@ public class FirstFragment extends Fragment {
 
     public final static String TAG = "FirstFragment.";
 
-    private AppVIewModel model;
+//    private AppVIewModel model;
 
     private FragmentFirstBinding binding;
 
@@ -48,7 +48,8 @@ public class FirstFragment extends Fragment {
                 FirstFragment.this.nextFragment();
             }
         });
-        model = new ViewModelProvider(requireActivity()).get(AppVIewModel.class);
+
+        AppVIewModel model = new ViewModelProvider(requireActivity()).get(AppVIewModel.class);
         model.getQrcode().observe(getViewLifecycleOwner(), qrcode -> {
             Log.d(TAG, "push qrcode: " + qrcode);
         });
