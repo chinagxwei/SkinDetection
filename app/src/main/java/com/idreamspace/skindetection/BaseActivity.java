@@ -40,7 +40,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected boolean actionBarIsShow = false;
 
-    protected BroadcastReceiver appReceiver;
+    protected AppReceiver appReceiver;
 
     protected AppVIewModel model;
 
@@ -116,9 +116,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         mIntentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         this.appReceiver = new AppReceiver();
         this.registerReceiver(this.appReceiver, mIntentFilter);
+        this.appReceiver.getAppIsConnected().observe(this, isConnected -> {
+            Log.d(TAG, "receiver network type: " + isConnected);
+        });
     }
 
-    protected void connectMqttServer(){
+    protected void connectMqttServer() {
         AppEntity app = (AppEntity) getApplication();
         MqttClient mqttClient = app.getComponent(MqttClient.class);
         try {
