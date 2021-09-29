@@ -3,19 +3,21 @@ package com.idreamspace.skindetection;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.idreamspace.skindetection.databinding.ActivityMainBinding;
+import com.idreamspace.skindetection.lifecycle.AppVIewModel;
 
 public class MainActivity extends BaseActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
     private final String TAG = "MainActivity.";
-
 
     private void setAppWindow() {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -50,7 +52,6 @@ public class MainActivity extends BaseActivity {
         });
         this.setContentView(view);
     }
-
 
     @Override
     public boolean onSupportNavigateUp() {

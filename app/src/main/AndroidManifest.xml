@@ -36,6 +36,7 @@
                 <!--                <category android:name="android.intent.category.HOME"/>-->
             </intent-filter>
         </activity>
+        <service android:name="org.eclipse.paho.android.service.MqttService"/>
     </application>
 
 </manifest>

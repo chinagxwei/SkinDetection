@@ -68,38 +68,38 @@ public class MqttClient implements Component {
         // 密码
         options.setPassword("password".toCharArray());
         // 设置MQTT监听
-        mMqttClient.setCallback(new MqttCallback() {
-            @Override
-            public void connectionLost(Throwable cause) {
-                Log.d(TAG, "connectionLost: 连接断开");
-            }
-
-            @Override
-            public void messageArrived(String topic, MqttMessage message) throws Exception {
-                Log.d(TAG, "消息到达");
-                String data = new String(message.getPayload(), StandardCharsets.UTF_8);
-                Log.d(TAG, data);
-                JSONObject jsonObject = new JSONObject(data);
-                if (jsonObject.has("event") && jsonObject.has("data")) {
-                    switch (jsonObject.getString("event")) {
-                        case Event.SET_QRCODE:
-                            Log.d(TAG, "设置二维码");
-                            Log.d(TAG, jsonObject.getString("data"));
-                            break;
-                        case Event.LOGIN:
-                            Log.d(TAG, "用户扫码登录");
-                            Log.d(TAG, jsonObject.getString("data"));
-                            break;
-                    }
-                }
-
-            }
-
-            @Override
-            public void deliveryComplete(IMqttDeliveryToken token) {
-
-            }
-        });
+//        mMqttClient.setCallback(new MqttCallback() {
+//            @Override
+//            public void connectionLost(Throwable cause) {
+//                Log.d(TAG, "connectionLost: 连接断开");
+//            }
+//
+//            @Override
+//            public void messageArrived(String topic, MqttMessage message) throws Exception {
+//                Log.d(TAG, "消息到达");
+//                String data = new String(message.getPayload(), StandardCharsets.UTF_8);
+//                Log.d(TAG, data);
+//                JSONObject jsonObject = new JSONObject(data);
+//                if (jsonObject.has("event") && jsonObject.has("data")) {
+//                    switch (jsonObject.getString("event")) {
+//                        case Event.SET_QRCODE:
+//                            Log.d(TAG, "设置二维码");
+//                            Log.d(TAG, jsonObject.getString("data"));
+//                            break;
+//                        case Event.LOGIN:
+//                            Log.d(TAG, "用户扫码登录");
+//                            Log.d(TAG, jsonObject.getString("data"));
+//                            break;
+//                    }
+//                }
+//
+//            }
+//
+//            @Override
+//            public void deliveryComplete(IMqttDeliveryToken token) {
+//
+//            }
+//        });
         //进行连接
         mMqttClient.connect(options, null, new IMqttActionListener() {
             @Override
@@ -126,6 +126,10 @@ public class MqttClient implements Component {
             }
         });
 
+    }
+
+    public void handler(MqttCallback callback){
+        mMqttClient.setCallback(callback);
     }
 
     public void disconnect() {

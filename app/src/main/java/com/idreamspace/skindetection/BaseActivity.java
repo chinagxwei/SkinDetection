@@ -17,9 +17,21 @@ import android.view.MenuItem;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.idreamspace.skindetection.app.AppEntity;
+import com.idreamspace.skindetection.config.Event;
+import com.idreamspace.skindetection.lifecycle.AppVIewModel;
+import com.idreamspace.skindetection.net.MqttClient;
 import com.idreamspace.skindetection.receivers.AppReceiver;
 import com.idreamspace.skindetection.utils.Util;
+
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.json.JSONObject;
+
+import java.nio.charset.StandardCharsets;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -29,10 +41,14 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected BroadcastReceiver appReceiver;
 
+    protected AppVIewModel model;
+
     @Override
     protected void onStart() {
         super.onStart();
         this.registerReceiver();
+        this.handlerMqttMessage();
+        model = new ViewModelProvider(this).get(AppVIewModel.class);
     }
 
     @Override
@@ -98,6 +114,45 @@ public abstract class BaseActivity extends AppCompatActivity {
         mIntentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         this.appReceiver = new AppReceiver();
         this.registerReceiver(this.appReceiver, mIntentFilter);
+    }
+
+    protected void handlerMqttMessage() {
+        AppEntity app = (AppEntity) getApplication();
+        MqttClient mqttClient = app.getComponent(MqttClient.class);
+        mqttClient.handler(new MqttCallback() {
+            @Override
+            public void connectionLost(Throwable cause) {
+                Log.d(TAG, "connectionLost: 连接断开");
+            }
+
+            @Override
+            public void messageArrived(String topic, MqttMessage message) throws Exception {
+                Log.d(TAG, "消息到达");
+                String data = new String(message.getPayload(), StandardCharsets.UTF_8);
+                Log.d(TAG, data);
+                JSONObject jsonObject = new JSONObject(data);
+                if (jsonObject.has("event") && jsonObject.has("data")) {
+                    switch (jsonObject.getString("event")) {
+                        case Event.SET_QRCODE:
+                            Log.d(TAG, "设置二维码");
+                            String qrcode = jsonObject.getString("data");
+                            Log.d(TAG, qrcode);
+                            model.setQrcode(qrcode);
+                            break;
+                        case Event.LOGIN:
+                            Log.d(TAG, "用户扫码登录");
+                            Log.d(TAG, jsonObject.getString("data"));
+                            break;
+                    }
+                }
+
+            }
+
+            @Override
+            public void deliveryComplete(IMqttDeliveryToken token) {
+
+            }
+        });
     }
 
     @Override
