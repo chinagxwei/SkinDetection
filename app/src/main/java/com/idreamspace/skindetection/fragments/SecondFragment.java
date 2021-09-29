@@ -31,6 +31,7 @@ import com.idreamspace.skindetection.net.HttpUpload;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
@@ -74,6 +75,7 @@ public class SecondFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        this.outputDirectory = this.getOutputDirectory();
         if (this.allPermissionsGranted()) {
             this.startCamera();
         } else {
@@ -89,7 +91,8 @@ public class SecondFragment extends Fragment {
         binding.buttonSecond3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SecondFragment.this.toFirstFragment();
+//                SecondFragment.this.toFirstFragment();
+                takePhoto();
             }
         });
     }
@@ -162,6 +165,15 @@ public class SecondFragment extends Fragment {
 
     private boolean allPermissionsGranted() {
         return ContextCompat.checkSelfPermission(this.getActivity().getBaseContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private File getOutputDirectory() {
+        Log.i(TAG, "pkg name: " + this.getActivity().getPackageName());
+        return Arrays.stream(this.getActivity().getExternalMediaDirs())
+                .findFirst()
+                .orElse(
+                        new File(this.getActivity().getPackageName(), getResources().getString(R.string.app_name))
+                );
     }
 
     @Override
