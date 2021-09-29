@@ -1,5 +1,6 @@
 package com.idreamspace.skindetection.lifecycle;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -8,7 +9,7 @@ public class AppVIewModel extends ViewModel {
 
     private MutableLiveData<String> openid;
 
-    public MutableLiveData<String> getQrcode() {
+    public LiveData<String> getQrcode() {
         if (qrcode == null) {
             qrcode = new MutableLiveData<>();
         }
@@ -19,7 +20,7 @@ public class AppVIewModel extends ViewModel {
         this.qrcode.setValue(qrcode);
     }
 
-    public MutableLiveData<String> getOpenid() {
+    public LiveData<String> getOpenid() {
         if (openid == null) {
             openid = new MutableLiveData<>();
         }

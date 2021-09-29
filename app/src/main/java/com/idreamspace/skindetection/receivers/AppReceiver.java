@@ -10,9 +10,17 @@ import android.net.wifi.WifiManager;
 import android.os.Parcelable;
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 public class AppReceiver extends BroadcastReceiver {
     private static final String TAG = ".AppReceiver";
 
+    private MutableLiveData<Boolean> appIsConnected = new MutableLiveData<>();
+
+    public LiveData<Boolean> getAppIsConnected() {
+        return appIsConnected;
+    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -67,6 +75,7 @@ public class AppReceiver extends BroadcastReceiver {
             NetworkInfo.State state = networkInfo.getState();
             boolean isConnected = state == NetworkInfo.State.CONNECTED;// 当然，这边可以更精确的确定状态
             Log.d(TAG, "isConnected: " + isConnected);
+            appIsConnected.setValue(isConnected);
             if (isConnected) {
 
             } else {
