@@ -2,8 +2,6 @@ package com.idreamspace.skindetection.app;
 
 import android.app.Application;
 
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
 import com.idreamspace.skindetection.net.HttpUpload;
 import com.idreamspace.skindetection.net.MqttClient;
 
