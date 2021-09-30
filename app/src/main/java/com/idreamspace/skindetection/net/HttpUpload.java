@@ -21,17 +21,19 @@ import okhttp3.Response;
 public class HttpUpload implements Component {
     public final static String HTTP_TAG = "Http.";
 
-    public void byPath(String getPath, String url) {
+    public boolean byPath(String getPath, String url) {
         File file = new File(getPath);
-        this.byFile(file, url);
+        return this.byFile(file, url);
     }
 
-    public void byFile(File file, String url) {
+    public boolean byFile(File file, String url) {
+        if (url.equals("")) {
+            return false;
+        }
         long size = file.length();//文件长度
         OkHttpClient httpClient = new OkHttpClient();
         MediaType mediaType = MediaType.parse("application/octet-stream");//设置类型，类型为八位字节流
-        RequestBody requestBody = RequestBody.create(mediaType, file);//把文件与类型放入请求体
-
+        RequestBody requestBody = RequestBody.create(file, mediaType);//把文件与类型放入请求体
         MultipartBody multipartBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
 //                .addFormDataPart("id", 0 + "")//添加表单数据
@@ -57,5 +59,6 @@ public class HttpUpload implements Component {
                 Log.d(HTTP_TAG, "onResponse: " + response.body().string());
             }
         });
+        return true;
     }
 }

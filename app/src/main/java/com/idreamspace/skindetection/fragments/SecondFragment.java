@@ -26,6 +26,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.idreamspace.skindetection.R;
 import com.idreamspace.skindetection.app.AppEntity;
+import com.idreamspace.skindetection.config.UriConfig;
 import com.idreamspace.skindetection.databinding.FragmentSecondBinding;
 import com.idreamspace.skindetection.net.HttpUpload;
 
@@ -49,7 +50,6 @@ public class SecondFragment extends Fragment {
     private File outputDirectory = null;
 
     private FragmentSecondBinding binding;
-
 
 
     @Override
@@ -150,9 +150,10 @@ public class SecondFragment extends Fragment {
                         Log.d(TAG, "name: " + photoFile.getName());
                         Log.d(TAG, "size: " + photoFile.length());
                         Log.d(TAG, "path: " + photoFile.getPath());
-                        AppEntity app = (AppEntity)SecondFragment.this.getActivity().getApplication();
+                        AppEntity app = (AppEntity) SecondFragment.this.getActivity().getApplication();
                         HttpUpload upload = app.getComponent(HttpUpload.class);
 //                        upload.byFile(photoFile, "http://10.0.2.2:8080/upload.php");
+                        upload.byFile(photoFile, UriConfig.UPLOAD_URL);
                     }
 
                     @Override
