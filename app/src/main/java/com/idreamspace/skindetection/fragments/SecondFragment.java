@@ -145,7 +145,7 @@ public class SecondFragment extends Fragment {
                     public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
                         Uri saveUri = Uri.fromFile(photoFile);
                         String msg = "Photo capture succeeded: " + saveUri;
-                        Toast.makeText(SecondFragment.this.getActivity(), msg, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(SecondFragment.this.getActivity(), msg, Toast.LENGTH_SHORT).show();
                         Log.d(TAG, msg);
                         Log.d(TAG, "name: " + photoFile.getName());
                         Log.d(TAG, "size: " + photoFile.length());
