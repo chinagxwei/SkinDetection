@@ -138,6 +138,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    protected void disconnectMqttServer() {
+        AppEntity app = (AppEntity) getApplication();
+        MqttClient mqttClient = app.getComponent(MqttClient.class);
+        if (mqttClient.isConnect()) {
+            mqttClient.disconnect();
+        }
+    }
+
     protected void handlerMqttMessage() {
         AppEntity app = (AppEntity) getApplication();
         MqttClient mqttClient = app.getComponent(MqttClient.class);
@@ -163,7 +171,9 @@ public abstract class BaseActivity extends AppCompatActivity {
                             break;
                         case Event.LOGIN:
                             Log.d(TAG, "用户扫码登录");
-                            Log.d(TAG, jsonObject.getString("data"));
+                            String openid = jsonObject.getString("data");
+                            Log.d(TAG, openid);
+                            model.setOpenid(openid);
                             break;
                     }
                 }
@@ -179,7 +189,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         this.unregisterReceiver(this.appReceiver);
+        this.disconnectMqttServer();
+        super.onDestroy();
     }
 }

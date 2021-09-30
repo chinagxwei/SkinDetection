@@ -53,6 +53,9 @@ public class FirstFragment extends Fragment {
         model.getQrcode().observe(getViewLifecycleOwner(), qrcode -> {
             Log.d(TAG, "push qrcode: " + qrcode);
         });
+        model.getOpenid().observe(getViewLifecycleOwner(), openid -> {
+            FirstFragment.this.nextFragment();
+        });
     }
 
     @Override

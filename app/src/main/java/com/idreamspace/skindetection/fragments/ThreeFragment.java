@@ -7,14 +7,18 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.idreamspace.skindetection.R;
 import com.idreamspace.skindetection.databinding.FragmentThreeBinding;
+import com.idreamspace.skindetection.lifecycle.AppVIewModel;
 
 public class ThreeFragment extends Fragment {
 
     private FragmentThreeBinding binding;
+
+    private String openid = "";
 
     @Override
     public View onCreateView(
@@ -54,6 +58,10 @@ public class ThreeFragment extends Fragment {
             }
         });
 
+        AppVIewModel model = new ViewModelProvider(requireActivity()).get(AppVIewModel.class);
+        model.getOpenid().observe(getViewLifecycleOwner(), openid -> {
+            ThreeFragment.this.openid = openid;
+        });
     }
 
     @Override
