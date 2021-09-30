@@ -118,6 +118,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         this.registerReceiver(this.appReceiver, mIntentFilter);
         this.appReceiver.getAppIsConnected().observe(this, isConnected -> {
             Log.d(TAG, "receiver network type: " + isConnected);
+            if (!isConnected) {
+                connectMqttServer();
+            }
         });
     }
 
@@ -125,7 +128,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         AppEntity app = (AppEntity) getApplication();
         MqttClient mqttClient = app.getComponent(MqttClient.class);
         try {
-            mqttClient.connect();
+            Log.d(TAG, "is connect: " + mqttClient.isConnect());
+            if (!mqttClient.isConnect()) {
+                mqttClient.connect();
+            }
         } catch (MqttException e) {
             Log.d(TAG, e.getMessage());
             e.printStackTrace();

@@ -28,6 +28,19 @@ public class MqttClient implements Component {
 
     private int errorCount = 0;
 
+    //声明一个MQTT客户端对象
+    private final MqttAndroidClient mMqttClient;
+
+    private final MqttConnectOptions options;
+
+    private final String clientId;
+
+    private static final String TAG = "MqttClient";
+
+    public boolean isConnect() {
+        return mMqttClient.isConnected();
+    }
+
     //单例模式
     public static MqttClient getInstance(Application app) {
         if (null == instance) {
@@ -40,23 +53,13 @@ public class MqttClient implements Component {
 
     private MqttClient(Application app) {
         this.app = app;
-    }
-
-    //声明一个MQTT客户端对象
-    private MqttAndroidClient mMqttClient;
-    private static final String TAG = "MqttClient";
-
-    //连接到服务器
-    public void connect() throws MqttException {
         //连接时使用的clientId, 必须唯一, 一般加时间戳
-        String clientId = Util.getSystemId();
+        clientId = Util.getSystemId();
         String uri = String.format("tcp://%s:%s", UriConfig.MACHINE_REGISTER_IP, UriConfig.MACHINE_REGISTER_PORT);
         mMqttClient = new MqttAndroidClient(app.getApplicationContext(), uri, clientId);
-        //连接参数
-        MqttConnectOptions options;
         options = new MqttConnectOptions();
         //设置自动重连
-        options.setAutomaticReconnect(true);
+        options.setAutomaticReconnect(false);
         // 缓存,
         options.setCleanSession(true);
         // 设置超时时间，单位：秒
@@ -67,6 +70,12 @@ public class MqttClient implements Component {
         options.setUserName("username");
         // 密码
         options.setPassword("password".toCharArray());
+    }
+
+
+
+    //连接到服务器
+    public boolean connect() throws MqttException {
         // 设置MQTT监听
 //        mMqttClient.setCallback(new MqttCallback() {
 //            @Override
@@ -100,6 +109,7 @@ public class MqttClient implements Component {
 //
 //            }
 //        });
+
         //进行连接
         mMqttClient.connect(options, null, new IMqttActionListener() {
             @Override
@@ -118,17 +128,17 @@ public class MqttClient implements Component {
             @Override
             public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                 Log.d(TAG, "onFailure: 连接失败");
-//                if (errorCount <= 30) {
-//                    errorCount++;
-//                    ((MainActivity) activity).handler.sendEmptyMessageDelayed(1, 60000);
+//                try {
+//                    mMqttClient.disconnect();
+//                } catch (MqttException e) {
+//                    e.printStackTrace();
 //                }
-
             }
         });
-
+        return true;
     }
 
-    public void handler(MqttCallback callback){
+    public void handler(MqttCallback callback) {
         mMqttClient.setCallback(callback);
     }
 

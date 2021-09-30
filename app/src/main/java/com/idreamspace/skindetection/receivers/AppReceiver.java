@@ -16,6 +16,8 @@ import androidx.lifecycle.MutableLiveData;
 public class AppReceiver extends BroadcastReceiver {
     private static final String TAG = ".AppReceiver";
 
+    private int checkNetConnectIndex = 1;
+
     private MutableLiveData<Boolean> appIsConnected = new MutableLiveData<>();
 
     public LiveData<Boolean> getAppIsConnected() {
@@ -74,13 +76,12 @@ public class AppReceiver extends BroadcastReceiver {
             NetworkInfo networkInfo = (NetworkInfo) parcelableExtra;
             NetworkInfo.State state = networkInfo.getState();
             boolean isConnected = state == NetworkInfo.State.CONNECTED;// 当然，这边可以更精确的确定状态
-            Log.d(TAG, "isConnected: " + isConnected);
-            appIsConnected.setValue(isConnected);
-            if (isConnected) {
-
-            } else {
-
+            if (checkNetConnectIndex == 3) {
+                Log.d(TAG, "[" + System.currentTimeMillis() + "]" + "isConnected: " + isConnected);
+                appIsConnected.setValue(isConnected);
+                checkNetConnectIndex = 1;
             }
+            checkNetConnectIndex++;
         }
     }
 
