@@ -21,6 +21,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.common.util.concurrent.ListenableFuture;
@@ -28,6 +29,7 @@ import com.idreamspace.skindetection.R;
 import com.idreamspace.skindetection.app.AppEntity;
 import com.idreamspace.skindetection.config.UriConfig;
 import com.idreamspace.skindetection.databinding.FragmentSecondBinding;
+import com.idreamspace.skindetection.lifecycle.AppVIewModel;
 import com.idreamspace.skindetection.net.HttpUpload;
 
 import java.io.File;
@@ -65,12 +67,12 @@ public class SecondFragment extends Fragment {
 
     private void nextFragment() {
         NavHostFragment.findNavController(SecondFragment.this)
-                .navigate(R.id.action_SecondFragment_to_FirstFragment);
+                .navigate(R.id.action_SecondFragment_to_next_Fragment);
     }
 
     private void toFirstFragment() {
         NavHostFragment.findNavController(SecondFragment.this)
-                .navigate(R.id.action_SecondFragment_to_next_Fragment);
+                .navigate(R.id.action_to_FirstFragment);
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -153,7 +155,10 @@ public class SecondFragment extends Fragment {
                         AppEntity app = (AppEntity) SecondFragment.this.getActivity().getApplication();
                         HttpUpload upload = app.getComponent(HttpUpload.class);
 //                        upload.byFile(photoFile, "http://10.0.2.2:8080/upload.php");
-                        upload.byFile(photoFile, UriConfig.UPLOAD_URL);
+//                        upload.byFile(photoFile, UriConfig.UPLOAD_URL);
+                        AppVIewModel model = new ViewModelProvider(requireActivity()).get(AppVIewModel.class);
+                        model.setPhoto(photoFile);
+                        nextFragment();
                     }
 
                     @Override

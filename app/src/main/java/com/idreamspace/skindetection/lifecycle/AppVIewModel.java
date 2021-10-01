@@ -4,15 +4,16 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class AppVIewModel extends ViewModel {
-    private MutableLiveData<String> qrcode;
+import java.io.File;
 
-    private MutableLiveData<String> openid;
+public class AppVIewModel extends ViewModel {
+    private MutableLiveData<String> qrcode = new MutableLiveData<>();
+
+    private MutableLiveData<String> openid = new MutableLiveData<>();
+
+    private MutableLiveData<File> photo = new MutableLiveData<>();
 
     public LiveData<String> getQrcode() {
-        if (qrcode == null) {
-            qrcode = new MutableLiveData<>();
-        }
         return qrcode;
     }
 
@@ -21,9 +22,6 @@ public class AppVIewModel extends ViewModel {
     }
 
     public LiveData<String> getOpenid() {
-        if (openid == null) {
-            openid = new MutableLiveData<>();
-        }
         return openid;
     }
 
@@ -31,4 +29,11 @@ public class AppVIewModel extends ViewModel {
         this.openid.setValue(openid);
     }
 
+    public LiveData<File> getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(File photo) {
+        this.photo.setValue(photo);
+    }
 }

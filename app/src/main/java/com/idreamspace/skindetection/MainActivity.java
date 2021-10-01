@@ -38,9 +38,9 @@ public class MainActivity extends BaseActivity {
         this.setCurrentAppActionBar();
     }
 
-    private void initView(){
+    private void initView() {
         View view = binding.getRoot();
-        view.setOnLongClickListener(new View.OnLongClickListener(){
+        view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 Log.d(TAG, "long");

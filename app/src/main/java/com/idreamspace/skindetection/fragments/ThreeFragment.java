@@ -1,5 +1,8 @@
 package com.idreamspace.skindetection.fragments;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +16,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.idreamspace.skindetection.R;
 import com.idreamspace.skindetection.databinding.FragmentThreeBinding;
 import com.idreamspace.skindetection.lifecycle.AppVIewModel;
+
+import java.net.URI;
 
 public class ThreeFragment extends Fragment {
 
@@ -33,34 +38,38 @@ public class ThreeFragment extends Fragment {
 
     private void nextFragment() {
         NavHostFragment.findNavController(ThreeFragment.this)
-                .navigate(R.id.action_to_SecondFragment);
+                .navigate(R.id.action_ThreeFragment_to_next_Fragment);
     }
 
-    private void toFirstFragment() {
+    private void toPrevFragment() {
         NavHostFragment.findNavController(ThreeFragment.this)
-                .navigate(R.id.action_to_FirstFragment);
+                .navigate(R.id.action_to_SecondFragment);
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.buttonThree.setOnClickListener(new View.OnClickListener() {
+        binding.imageView7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ThreeFragment.this.nextFragment();
             }
         });
 
-        binding.buttonThree2.setOnClickListener(new View.OnClickListener() {
+        binding.imageView8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ThreeFragment.this.toFirstFragment();
+                ThreeFragment.this.toPrevFragment();
             }
         });
 
         AppVIewModel model = new ViewModelProvider(requireActivity()).get(AppVIewModel.class);
         model.getOpenid().observe(getViewLifecycleOwner(), openid -> {
             ThreeFragment.this.openid = openid;
+        });
+        model.getPhoto().observe(getViewLifecycleOwner(), photo -> {
+            Bitmap mBitmap = BitmapFactory.decodeFile(photo.getAbsolutePath());
+            binding.imageView2.setImageBitmap(mBitmap);
         });
     }
 
