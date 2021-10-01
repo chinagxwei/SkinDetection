@@ -7,4 +7,16 @@
     tools:context=".fragments.FourFragment"
     android:background="@mipmap/bg_5">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="270dp"
+        android:padding="10dp"
+        android:adjustViewBounds="true"
+        android:background="#deb068"
+        android:src="@drawable/test_qrcode"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

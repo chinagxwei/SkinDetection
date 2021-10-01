@@ -37,12 +37,11 @@
         tools:layout="@layout/fragment_three">
         <action
             android:id="@+id/action_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
-        <action
-            android:id="@+id/action_to_FirstFragment"
-            app:destination="@id/FirstFragment"
-            app:popUpTo="@id/FirstFragment"
+            app:destination="@id/SecondFragment"
             app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_ThreeFragment_to_next_Fragment"
+            app:destination="@id/FourFragment" />
     </fragment>
     <fragment
         android:id="@+id/FourFragment"

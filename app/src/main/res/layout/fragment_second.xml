@@ -5,17 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.SecondFragment">
-    <LinearLayout
+    <androidx.camera.view.PreviewView
+        android:id="@+id/viewFinder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
-
-        <androidx.camera.view.PreviewView
-            android:id="@+id/viewFinder"
-            android:layout_width="510dp"
-            android:layout_height="match_parent"/>
-    </LinearLayout>
+        android:layout_height="match_parent"/>
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -32,7 +25,7 @@
         app:layout_constraintStart_toStartOf="parent" android:visibility="invisible"/>
 
     <ImageButton
-        android:background="@mipmap/take_btn"
+        android:background="@drawable/take_btn"
         android:id="@+id/button_second3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
