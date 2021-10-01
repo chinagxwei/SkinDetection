@@ -2,28 +2,62 @@ package com.idreamspace.skindetection.utils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.util.Log;
 import android.view.View;
 
 import com.idreamspace.skindetection.receivers.AppReceiver;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
 
 public class Util {
 
     public final static String UTIL_TAG = "Util.";
 
-    @SuppressLint("HardwareIds")
-    public static String getSystemId() {
-        String serial = "";
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            serial = Build.getSerial();
-        } else {
-            serial = Build.SERIAL;
+    public static String getFileContent(String filename, Context context) {
+        try {
+            byte[] bytes = new byte[16];
+            FileInputStream fip = context.openFileInput(filename);
+            int len;
+            String uuid = "";
+            while ((len = fip.read(bytes)) != -1) {
+                uuid = new String(bytes, 0, len, StandardCharsets.UTF_8);
+            }
+            return uuid;
+        } catch (IOException e) {
+            return "";
         }
-        return "idreamspace-" + serial;
+    }
+
+    public static String setFileContent(String filename, Context context) {
+        try {
+            String uniqueID = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 16);
+            FileOutputStream fos = context.openFileOutput(filename, Context.MODE_PRIVATE);
+            fos.write(uniqueID.getBytes(StandardCharsets.UTF_8));
+            fos.close();
+            return uniqueID;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public static String getSystemIdByCache(Context context) {
+        String filename = "system_id";
+        String id = Util.getFileContent(filename, context);
+        if (id.equals("")) {
+            id = Util.setFileContent(filename, context);
+        }
+        return "skin-" + id;
     }
 
     public static void hideSystemUI(Activity activity) {

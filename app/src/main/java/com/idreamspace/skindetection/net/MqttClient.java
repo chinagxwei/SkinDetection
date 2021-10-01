@@ -54,7 +54,7 @@ public class MqttClient implements Component {
     private MqttClient(Application app) {
         this.app = app;
         //连接时使用的clientId, 必须唯一, 一般加时间戳
-        clientId = Util.getSystemId();
+        clientId = Util.getSystemIdByCache(app.getBaseContext());
         String uri = String.format("tcp://%s:%s", UriConfig.MACHINE_REGISTER_IP, UriConfig.MACHINE_REGISTER_PORT);
         mMqttClient = new MqttAndroidClient(app.getApplicationContext(), uri, clientId);
         options = new MqttConnectOptions();
@@ -71,7 +71,6 @@ public class MqttClient implements Component {
         // 密码
         options.setPassword("password".toCharArray());
     }
-
 
 
     //连接到服务器
