@@ -32,6 +32,7 @@ public class Util {
             while ((len = fip.read(bytes)) != -1) {
                 uuid = new String(bytes, 0, len, StandardCharsets.UTF_8);
             }
+            fip.close();
             return uuid;
         } catch (IOException e) {
             return "";
