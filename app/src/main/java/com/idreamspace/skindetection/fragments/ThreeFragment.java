@@ -17,6 +17,7 @@ import com.idreamspace.skindetection.R;
 import com.idreamspace.skindetection.databinding.FragmentThreeBinding;
 import com.idreamspace.skindetection.lifecycle.AppVIewModel;
 
+import java.io.File;
 import java.net.URI;
 
 public class ThreeFragment extends Fragment {
@@ -24,6 +25,8 @@ public class ThreeFragment extends Fragment {
     private FragmentThreeBinding binding;
 
     private String openid = "";
+
+    private File photo = null;
 
     @Override
     public View onCreateView(
@@ -59,6 +62,7 @@ public class ThreeFragment extends Fragment {
         binding.imageView8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ThreeFragment.this.photo.delete();
                 ThreeFragment.this.toPrevFragment();
             }
         });
@@ -68,6 +72,7 @@ public class ThreeFragment extends Fragment {
             ThreeFragment.this.openid = openid;
         });
         model.getPhoto().observe(getViewLifecycleOwner(), photo -> {
+            ThreeFragment.this.photo = photo;
             Bitmap mBitmap = BitmapFactory.decodeFile(photo.getAbsolutePath());
             binding.imageView2.setImageBitmap(mBitmap);
         });
